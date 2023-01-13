@@ -23,7 +23,7 @@ namespace UniRx.Examples
         Subject<int> onBarBar = new Subject<int>();
         public IObservable<int> OnBarBar { get { return onBarBar; } }
 
-        void Start()
+        private void Start()
         {
             // convert to IO<EventPattern> as (sender, eventArgs)
             Observable.FromEventPattern<EventHandler<MyEventArgs>, MyEventArgs>(

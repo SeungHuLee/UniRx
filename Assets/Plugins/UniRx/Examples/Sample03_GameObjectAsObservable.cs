@@ -1,7 +1,5 @@
-﻿#if !(UNITY_IPHONE || UNITY_ANDROID || UNITY_METRO)
-
-using UnityEngine;
-using UniRx.Triggers; // for enable gameObject.EventAsObservbale()
+﻿using UnityEngine;
+using UniRx.Triggers;
 
 namespace UniRx.Examples
 {
@@ -19,5 +17,3 @@ namespace UniRx.Examples
         }
     }
 }
-
-#endif

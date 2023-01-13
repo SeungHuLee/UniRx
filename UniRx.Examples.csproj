@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{68836B28-4FE0-EEFA-9992-195D65092AD5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -68,7 +69,7 @@
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample04_ConvertFromUnityCallback.cs" />
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample05_ConvertFromCoroutine.cs" />
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample06_ConvertToCoroutine.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample07_OrchestratIEnumerator.cs" />
+    <Compile Include="Assets\Plugins\UniRx\Examples\Sample07_OrchestrateIEnumerator.cs" />
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample08_DetectDoubleClick.cs" />
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample09_EventHandling.cs" />
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample10_MainThreadDispatcher.cs" />

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using UniRx.Triggers; // Triggers Namepsace
+using UniRx.Triggers;
 using System;
 
 namespace UniRx.Examples
 {
     public class Sample02_ObservableTriggers : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
             // Get the plain object
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

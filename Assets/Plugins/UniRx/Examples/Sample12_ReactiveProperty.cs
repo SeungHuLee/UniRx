@@ -1,7 +1,4 @@
-﻿// for uGUI(from 4.6)
-#if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5)
-
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +6,6 @@ namespace UniRx.Examples
 {
     public class Sample12_ReactiveProperty : MonoBehaviour
     {
-        // Open Sample12Scene. Set from canvas
         public Button MyButton;
         public Toggle MyToggle;
         public InputField MyInput;
@@ -21,7 +17,7 @@ namespace UniRx.Examples
 
         Enemy enemy = new Enemy(1000);
 
-        void Start()
+        private void Start()
         {
             // UnityEvent as Observable
             // (shortcut, MyButton.OnClickAsObservable())
@@ -32,11 +28,8 @@ namespace UniRx.Examples
             MyToggle.OnValueChangedAsObservable().SubscribeToInteractable(MyButton);
 
             // input shows delay after 1 second
-#if !(UNITY_4_6 || UNITY_4_7 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2)
             MyInput.OnValueChangedAsObservable()
-#else
-            MyInput.OnValueChangeAsObservable()
-#endif
+
                 .Where(x => x != null)
                 .Delay(TimeSpan.FromSeconds(1))
                 .SubscribeToText(MyText); // SubscribeToText is UniRx.UI Extension Method
@@ -67,11 +60,8 @@ namespace UniRx.Examples
 
         public Enemy(int initialHp)
         {
-            // Declarative Property
             CurrentHp = new ReactiveProperty<long>(initialHp);
             IsDead = CurrentHp.Select(x => x <= 0).ToReactiveProperty();
         }
     }
 }
-
-#endif

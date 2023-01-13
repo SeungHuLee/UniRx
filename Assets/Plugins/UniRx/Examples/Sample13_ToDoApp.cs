@@ -1,7 +1,4 @@
-﻿// for uGUI(from 4.6)
-#if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5)
-
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -23,7 +20,7 @@ namespace UniRx.Examples
 
         ReactiveCollection<GameObject> toDos = new ReactiveCollection<GameObject>();
 
-        void Start()
+        private void Start()
         {
             // merge Button click and push enter key on input field.
             var submit = Observable.Merge(
@@ -64,5 +61,3 @@ namespace UniRx.Examples
         }
     }
 }
-
-#endif

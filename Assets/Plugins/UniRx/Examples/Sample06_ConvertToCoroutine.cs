@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable CS0618
+
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,36 +8,27 @@ namespace UniRx.Examples
 {
     public class Sample06_ConvertToCoroutine : MonoBehaviour
     {
-        // convert IObservable to Coroutine
-        void Start()
+        private void Start()
         {
             StartCoroutine(ComplexCoroutineTest());
         }
 
-        IEnumerator ComplexCoroutineTest()
+        private IEnumerator ComplexCoroutineTest()
         {
             yield return new WaitForSeconds(1);
 
             var v = default(int);
             yield return Observable.Range(1, 10).StartAsCoroutine(x => v = x);
 
-            Debug.Log(v); // 10(callback is last value)
+            Debug.Log(v);
             yield return new WaitForSeconds(3);
 
             yield return Observable.Return(100).StartAsCoroutine(x => v = x);
 
-            Debug.Log(v); // 100
+            Debug.Log(v);
         }
 
-        // Note:ToAwaitableEnumerator/StartAsCoroutine/LazyTask are obsolete way on Unity 5.3
-        // You can use ToYieldInstruction.
-
-#if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2)
-#if UNITY_2018_3_OR_NEWER
-#pragma warning disable CS0618
-#endif
-
-        IEnumerator TestNewCustomYieldInstruction()
+        private IEnumerator TestNewCustomYieldInstruction()
         {
             // wait Rx Observable.
             yield return Observable.Timer(TimeSpan.FromSeconds(1)).ToYieldInstruction();
@@ -53,10 +46,7 @@ namespace UniRx.Examples
             // other sample(wait until transform.position.y >= 100) 
             yield return this.ObserveEveryValueChanged(x => x.transform).FirstOrDefault(x => x.position.y >= 100).ToYieldInstruction();
         }
-#if UNITY_2018_3_OR_NEWER
-#pragma warning restore CS0618
-#endif
-#endif
-
     }
 }
+
+#pragma warning restore CS0618

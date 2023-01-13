@@ -1,21 +1,16 @@
-﻿#if !(UNITY_METRO || UNITY_WP8)
-
-#if UNITY_2018_3_OR_NEWER
-#pragma warning disable CS0618
-#endif
+﻿#pragma warning disable CS0618
 
 using UnityEngine;
 
 namespace UniRx.Examples
 {
-    // sample script, attach your object.
     public class Sample01_ObservableWWW : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
             // Basic: Download from google.
             {
-                ObservableWWW.Get("http://google.co.jp/")
+                ObservableWWW.Get("http://google.com/")
                     .Subscribe(
                         x => Debug.Log(x.Substring(0, 100)), // onSuccess
                         ex => Debug.LogException(ex)); // onError
@@ -82,9 +77,4 @@ namespace UniRx.Examples
         }
     }
 }
-
-#endif
-
-#if UNITY_2018_3_OR_NEWER
 #pragma warning restore CS0618
-#endif
