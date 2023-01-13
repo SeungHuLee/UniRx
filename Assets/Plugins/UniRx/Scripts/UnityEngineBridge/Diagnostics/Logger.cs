@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace UniRx.Diagnostics
@@ -25,7 +23,7 @@ namespace UniRx.Diagnostics
             if (!isInitialized)
             {
                 isInitialized = true;
-                isDebugBuild = Debug.isDebugBuild;
+                isDebugBuild = UnityEngine.Debug.isDebugBuild;
             }
 
             if (isDebugBuild)
@@ -45,7 +43,7 @@ namespace UniRx.Diagnostics
             if (!isInitialized)
             {
                 isInitialized = true;
-                isDebugBuild = Debug.isDebugBuild;
+                isDebugBuild = UnityEngine.Debug.isDebugBuild;
             }
 
             if (isDebugBuild)

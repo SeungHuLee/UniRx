@@ -266,8 +266,6 @@ namespace UniRx.Triggers
 
         #endregion
 
-#if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5)
-
         #region ObservableTransformChangedTrigger
 
         /// <summary>Callback sent to the graphic before a Transform parent change occurs.</summary>
@@ -321,7 +319,6 @@ namespace UniRx.Triggers
         }
 
         #endregion
-#endif
 
         #region ObservableParticleTrigger
 

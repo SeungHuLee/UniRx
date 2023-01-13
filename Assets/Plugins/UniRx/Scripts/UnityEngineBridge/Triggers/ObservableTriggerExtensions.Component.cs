@@ -1,13 +1,9 @@
-﻿using System; // require keep for Windows Universal App
+﻿using System;
 using UnityEngine;
-
-#if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5)
 using UnityEngine.EventSystems;
-#endif
 
 namespace UniRx.Triggers
 {
-    // for Component
     public static partial class ObservableTriggerExtensions
     {
         #region ObservableAnimatorTrigger

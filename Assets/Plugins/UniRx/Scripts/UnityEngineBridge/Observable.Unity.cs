@@ -20,7 +20,6 @@ namespace UniRx
 
     public enum MainThreadDispatchType
     {
-        /// <summary>yield return null</summary>
         Update,
         FixedUpdate,
         EndOfFrame,
@@ -1083,14 +1082,6 @@ namespace UniRx
             return new UniRx.Operators.BatchFrameObservable(source, frameCount, frameCountType);
         }
         
-        static IEnumerable<IObservable<T>> RepeatInfinite<T>(IObservable<T> source)
-        {
-            while (true)
-            {
-                yield return source;
-            }
-        }
-
         internal static class Stubs
         {
             public static readonly Action Nop = () => { };

@@ -34,7 +34,7 @@ namespace UniRx.Examples
                 .Subscribe(x => Debug.Log(x));
         }
 
-        prviate IEnumerator TestAsync()
+        private IEnumerator TestAsync()
         {
             Debug.Log("a");
             yield return new WaitForSeconds(1);

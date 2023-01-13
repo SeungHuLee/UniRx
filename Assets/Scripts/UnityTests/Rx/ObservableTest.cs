@@ -58,8 +58,6 @@ namespace UniRx.Tests
         [Test]
         public void Wait()
         {
-#if !UNITY_METRO
-
             var subject = new Subject<int>();
 
             ThreadPool.QueueUserWorkItem(_ =>
@@ -70,8 +68,6 @@ namespace UniRx.Tests
             });
 
             subject.Wait().Is(100);
-
-#endif
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace UniRx.Diagnostics
 {
@@ -12,10 +13,10 @@ namespace UniRx.Diagnostics
 #if DEBUG
             var l = (label == null) ? "" : "[" + label + "]";
             return source.Materialize()
-                .Do(x => Debug.Log(l + x.ToString()))
+                .Do(x => UnityEngine.Debug.Log(l + x.ToString()))
                 .Dematerialize()
-                .DoOnCancel(() => Debug.Log(l + "OnCancel"))
-                .DoOnSubscribe(() => Debug.Log(l + "OnSubscribe"));
+                .DoOnCancel(() => UnityEngine.Debug.Log(l + "OnCancel"))
+                .DoOnSubscribe(() => UnityEngine.Debug.Log(l + "OnSubscribe"));
 
 #else
             return source;

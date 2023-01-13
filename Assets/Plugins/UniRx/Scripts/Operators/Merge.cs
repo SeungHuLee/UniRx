@@ -182,7 +182,7 @@ namespace UniRx.Operators
             {
                 lock (gate)
                 {
-                    parent.OnError(error);
+                    try { observer.OnError(error); } finally { Dispose(); };
                 }
             }
 
