@@ -25,7 +25,7 @@ namespace UniRx.Diagnostics
             if (!isInitialized)
             {
                 isInitialized = true;
-                isDebugBuild = UnityEngine.Debug.isDebugBuild;
+                isDebugBuild = Debug.isDebugBuild;
             }
 
             if (isDebugBuild)
@@ -45,7 +45,7 @@ namespace UniRx.Diagnostics
             if (!isInitialized)
             {
                 isInitialized = true;
-                isDebugBuild = UnityEngine.Debug.isDebugBuild;
+                isDebugBuild = Debug.isDebugBuild;
             }
 
             if (isDebugBuild)

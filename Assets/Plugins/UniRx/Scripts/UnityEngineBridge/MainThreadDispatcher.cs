@@ -455,7 +455,7 @@ namespace UniRx
                 {
                     // Throw exception when calling from a worker thread.
                     var ex = new Exception("UniRx requires a MainThreadDispatcher component created on the main thread. Make sure it is added to the scene before calling UniRx from a worker thread.");
-                    UnityEngine.Debug.LogException(ex);
+                    Debug.LogException(ex);
                     throw ex;
                 }
 

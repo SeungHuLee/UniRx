@@ -1,11 +1,6 @@
-﻿// This code is borrwed from Rx Official and some modified.
-
-// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace UniRx
 {
@@ -142,7 +137,7 @@ namespace UniRx
     {
         static IObservable<T> AddRef<T>(IObservable<T> xs, RefCountDisposable r)
         {
-            return Observable.Create<T>((IObserver<T> observer) => new CompositeDisposable(new IDisposable[]
+            return Create<T>((IObserver<T> observer) => new CompositeDisposable(new IDisposable[]
 	        {
 		        r.GetDisposable(),
 		        xs.Subscribe(observer)

@@ -1,9 +1,6 @@
-﻿// this code is borrowed from RxOfficial(rx.codeplex.com) and modified
-
-// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 
 namespace UniRx.InternalUtil
 {
@@ -44,9 +41,7 @@ namespace UniRx.InternalUtil
                 _action();
             }
         }
-
-        #region Inequality
-
+        
         /// <summary>
         /// Compares the work item with another work item based on absolute time values.
         /// </summary>
@@ -56,7 +51,7 @@ namespace UniRx.InternalUtil
         public int CompareTo(ScheduledItem other)
         {
             // MSDN: By definition, any object compares greater than null, and two null references compare equal to each other. 
-            if (object.ReferenceEquals(other, null))
+            if (ReferenceEquals(other, null))
                 return 1;
 
             return DueTime.CompareTo(other.DueTime);
@@ -109,11 +104,7 @@ namespace UniRx.InternalUtil
         {
             return left.CompareTo(right) >= 0;
         }
-
-        #endregion
-
-        #region Equality
-
+        
         /// <summary>
         /// Determines whether two specified ScheduledItem&lt;TAbsolute, TValue&gt; objects are equal.
         /// </summary>
@@ -123,7 +114,7 @@ namespace UniRx.InternalUtil
         /// <remarks>This operator does not provide results consistent with the IComparable implementation. Instead, it implements reference equality.</remarks>
         public static bool operator ==(ScheduledItem left, ScheduledItem right)
         {
-            return object.ReferenceEquals(left, right);
+            return ReferenceEquals(left, right);
         }
 
         /// <summary>
@@ -145,7 +136,7 @@ namespace UniRx.InternalUtil
         /// <returns>true if the obj parameter is a ScheduledItem&lt;TAbsolute&gt; object and is equal to the current ScheduledItem&lt;TAbsolute&gt; object; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
-            return object.ReferenceEquals(this, obj);
+            return ReferenceEquals(this, obj);
         }
 
         /// <summary>
@@ -156,9 +147,7 @@ namespace UniRx.InternalUtil
         {
             return base.GetHashCode();
         }
-
-        #endregion
-
+        
         public IDisposable Cancellation
         {
             get

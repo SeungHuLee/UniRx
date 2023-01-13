@@ -236,7 +236,7 @@ namespace RuntimeUnitTestToolkit
                     }
                     catch (Exception e)
                     {
-                        UnityEngine.Debug.LogError(testType.Name + "." + item.Name + " failed to register setup/teardown method, exception: " + e.ToString());
+                        Debug.LogError(testType.Name + "." + item.Name + " failed to register setup/teardown method, exception: " + e.ToString());
                     }
                 }
 
@@ -254,7 +254,7 @@ namespace RuntimeUnitTestToolkit
                             }
                             else
                             {
-                                UnityEngine.Debug.Log(testType.Name + "." + item.Name + " currently does not supported in RuntumeUnitTestToolkit(multiple parameter or return type is invalid).");
+                                Debug.Log(testType.Name + "." + item.Name + " currently does not supported in RuntumeUnitTestToolkit(multiple parameter or return type is invalid).");
                             }
                         }
 
@@ -268,13 +268,13 @@ namespace RuntimeUnitTestToolkit
                             }
                             else
                             {
-                                UnityEngine.Debug.Log(testType.Name + "." + item.Name + " currently does not supported in RuntumeUnitTestToolkit(multiple parameter or return type is invalid).");
+                                Debug.Log(testType.Name + "." + item.Name + " currently does not supported in RuntumeUnitTestToolkit(multiple parameter or return type is invalid).");
                             }
                         }
                     }
                     catch (Exception e)
                     {
-                        UnityEngine.Debug.LogError(testType.Name + "." + item.Name + " failed to register method, exception: " + e.ToString());
+                        Debug.LogError(testType.Name + "." + item.Name + " failed to register method, exception: " + e.ToString());
                     }
                 }
             }

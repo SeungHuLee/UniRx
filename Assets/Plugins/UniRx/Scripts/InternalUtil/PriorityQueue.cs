@@ -1,8 +1,5 @@
-﻿// this code is borrowed from RxOfficial(rx.codeplex.com) and modified
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace UniRx.InternalUtil

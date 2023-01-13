@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using UnityEngine.EventSystems;
 
 namespace UniRx.Examples
 {
@@ -45,7 +43,7 @@ namespace UniRx.Examples
             });
             toDos.ObserveRemove().Subscribe(x =>
             {
-                GameObject.Destroy(x.Value);
+                Destroy(x.Value);
             });
 
             // Clear

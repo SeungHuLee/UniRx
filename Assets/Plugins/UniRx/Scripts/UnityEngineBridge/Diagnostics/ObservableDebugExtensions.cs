@@ -12,10 +12,10 @@ namespace UniRx.Diagnostics
 #if DEBUG
             var l = (label == null) ? "" : "[" + label + "]";
             return source.Materialize()
-                .Do(x => UnityEngine.Debug.Log(l + x.ToString()))
+                .Do(x => Debug.Log(l + x.ToString()))
                 .Dematerialize()
-                .DoOnCancel(() => UnityEngine.Debug.Log(l + "OnCancel"))
-                .DoOnSubscribe(() => UnityEngine.Debug.Log(l + "OnSubscribe"));
+                .DoOnCancel(() => Debug.Log(l + "OnCancel"))
+                .DoOnSubscribe(() => Debug.Log(l + "OnSubscribe"));
 
 #else
             return source;

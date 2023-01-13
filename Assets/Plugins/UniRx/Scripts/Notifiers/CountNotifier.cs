@@ -1,6 +1,4 @@
 ﻿﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace UniRx
 {
@@ -61,7 +59,7 @@ namespace UniRx
                 statusChanged.OnNext(CountChangedStatus.Increment);
                 if (Count == Max) statusChanged.OnNext(CountChangedStatus.Max);
 
-                return Disposable.Create(() => this.Decrement(incrementCount));
+                return Disposable.Create(() => Decrement(incrementCount));
             }
         }
 

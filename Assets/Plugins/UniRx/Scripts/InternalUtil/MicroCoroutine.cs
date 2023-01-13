@@ -77,7 +77,7 @@ namespace UniRx.InternalUtil
                                 // validation only on Editor.
                                 if (coroutine.Current != null)
                                 {
-                                    UnityEngine.Debug.LogWarning("MicroCoroutine supports only yield return null. return value = " + coroutine.Current);
+                                    Debug.LogWarning("MicroCoroutine supports only yield return null. return value = " + coroutine.Current);
                                 }
 #endif
 
@@ -115,7 +115,7 @@ namespace UniRx.InternalUtil
                                     // validation only on Editor.
                                     if (fromTail.Current != null)
                                     {
-                                        UnityEngine.Debug.LogWarning("MicroCoroutine supports only yield return null. return value = " + coroutine.Current);
+                                        Debug.LogWarning("MicroCoroutine supports only yield return null. return value = " + coroutine.Current);
                                     }
 #endif
 
