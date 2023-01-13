@@ -111,18 +111,12 @@ namespace UniRx
     }
 
     [Serializable]
-    public class ReactiveDictionary<TKey, TValue> : IReactiveDictionary<TKey, TValue>, IDictionary<TKey, TValue>, IEnumerable, ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IDictionary, IDisposable
-#if !UNITY_METRO
-        , ISerializable, IDeserializationCallback
-#endif
-    {
-        [NonSerialized]
-        bool isDisposed = false;
+    public class ReactiveDictionary<TKey, TValue> : IReactiveDictionary<TKey, TValue>, IDictionary<TKey, TValue>, IEnumerable, ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IDictionary, IDisposable, ISerializable, IDeserializationCallback
 
-#if !UniRxLibrary
-        [UnityEngine.SerializeField]
-#endif
-        readonly Dictionary<TKey, TValue> inner;
+    {
+        [NonSerialized] bool isDisposed = false;
+        
+        [SerializeField] readonly Dictionary<TKey, TValue> inner;
 
         public ReactiveDictionary()
         {
@@ -256,9 +250,7 @@ namespace UniRx
                 }
             }
         }
-
-        #region IDisposable Support
-
+        
         private bool disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
@@ -282,14 +274,8 @@ namespace UniRx
         {
             Dispose(true);
         }
-
-        #endregion
-
-
-        #region Observe
-
-        [NonSerialized]
-        Subject<int> countChanged = null;
+        
+        [NonSerialized] Subject<int> countChanged = null;
         public IObservable<int> ObserveCountChanged(bool notifyCurrentCount = false)
         {
             if (isDisposed) return Observable.Empty<int>();
@@ -305,42 +291,34 @@ namespace UniRx
             }
         }
 
-        [NonSerialized]
-        Subject<Unit> collectionReset = null;
+        [NonSerialized] Subject<Unit> collectionReset = null;
         public IObservable<Unit> ObserveReset()
         {
             if (isDisposed) return Observable.Empty<Unit>();
             return collectionReset ?? (collectionReset = new Subject<Unit>());
         }
 
-        [NonSerialized]
-        Subject<DictionaryAddEvent<TKey, TValue>> dictionaryAdd = null;
+        [NonSerialized] Subject<DictionaryAddEvent<TKey, TValue>> dictionaryAdd = null;
         public IObservable<DictionaryAddEvent<TKey, TValue>> ObserveAdd()
         {
             if (isDisposed) return Observable.Empty<DictionaryAddEvent<TKey, TValue>>();
             return dictionaryAdd ?? (dictionaryAdd = new Subject<DictionaryAddEvent<TKey, TValue>>());
         }
 
-        [NonSerialized]
-        Subject<DictionaryRemoveEvent<TKey, TValue>> dictionaryRemove = null;
+        [NonSerialized] Subject<DictionaryRemoveEvent<TKey, TValue>> dictionaryRemove = null;
         public IObservable<DictionaryRemoveEvent<TKey, TValue>> ObserveRemove()
         {
             if (isDisposed) return Observable.Empty<DictionaryRemoveEvent<TKey, TValue>>();
             return dictionaryRemove ?? (dictionaryRemove = new Subject<DictionaryRemoveEvent<TKey, TValue>>());
         }
 
-        [NonSerialized]
-        Subject<DictionaryReplaceEvent<TKey, TValue>> dictionaryReplace = null;
+        [NonSerialized] Subject<DictionaryReplaceEvent<TKey, TValue>> dictionaryReplace = null;
         public IObservable<DictionaryReplaceEvent<TKey, TValue>> ObserveReplace()
         {
             if (isDisposed) return Observable.Empty<DictionaryReplaceEvent<TKey, TValue>>();
             return dictionaryReplace ?? (dictionaryReplace = new Subject<DictionaryReplaceEvent<TKey, TValue>>());
         }
-
-        #endregion
-
-        #region implement explicit
-
+        
         object IDictionary.this[object key]
         {
             get
@@ -353,7 +331,6 @@ namespace UniRx
                 this[(TKey)key] = (TValue)value;
             }
         }
-
 
         bool IDictionary.IsFixedSize
         {
@@ -442,9 +419,7 @@ namespace UniRx
         {
             ((IDictionary)inner).CopyTo(array, index);
         }
-
-#if !UNITY_METRO
-
+        
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             ((ISerializable)inner).GetObjectData(info, context);
@@ -454,9 +429,7 @@ namespace UniRx
         {
             ((IDeserializationCallback)inner).OnDeserialization(sender);
         }
-
-#endif
-
+        
         void IDictionary.Remove(object key)
         {
             Remove((TKey)key);
@@ -506,8 +479,6 @@ namespace UniRx
         {
             return ((IDictionary)inner).GetEnumerator();
         }
-
-        #endregion
     }
 
     public static partial class ReactiveDictionaryExtensions

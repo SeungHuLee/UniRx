@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UniRx.InternalUtil;
 using UniRx.Triggers;
-
-#if !UniRxLibrary
 using ObservableUnity = UniRx.Observable;
-#endif
 
 namespace UniRx
 {

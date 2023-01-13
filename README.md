@@ -24,11 +24,13 @@ These result operations to be close-coupled, which often results in huge monolit
 
 Rx solves this "async blues" anti-pattern from happening. Rx is a library for composing async and event-based programs using observable collections and LINQ-style query operators. 
   
-The game loop (every Update, OnCollisionEnter, etc), sensor data (Kinect, Leap Motion, VR Input, etc.) are considered as events. Rx represents events as reactive sequences which are both easily composable and support time-based operations by using LINQ query operators.
+- Game Loop (every Update, OnCollisionEnter, etc), 
+- Sensor data (Kinect, Leap Motion, VR Input, etc.) 
+are considered as events. Rx represents events as reactive sequences which are both easily composable and support time-based operations by using LINQ query operators.
 
 Unity is generally single threaded but UniRx facilitates multithreading for joins, cancels, accessing GameObjects, etc.
 
-UniRx helps UI programming with uGUI. All UI events (clicked, valuechanged, etc) can be converted to UniRx event streams. 
+UniRx helps UI programming with uGUI. All UI events can be converted to UniRx event streams. 
 
 Please see UniTask for lightweight, powerful async/await integration with Unity.  [Cysharp/UniTask](https://github.com/Cysharp/UniTask).
 

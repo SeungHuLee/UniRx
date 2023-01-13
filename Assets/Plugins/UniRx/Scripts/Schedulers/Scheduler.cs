@@ -56,11 +56,8 @@ namespace UniRx
             {
                 get
                 {
-#if UniRxLibrary
-                    return timeBasedOperations ?? (timeBasedOperations = Scheduler.ThreadPool);
-#else
-                    return timeBasedOperations ?? (timeBasedOperations = Scheduler.MainThread); // MainThread as default for TimeBased Operation
-#endif
+                    // MainThread as default for TimeBased Operation
+                    return timeBasedOperations ?? (timeBasedOperations = Scheduler.MainThread);
                 }
                 set
                 {
@@ -77,7 +74,7 @@ namespace UniRx
                     // WebGL does not support threadpool
                     return asyncConversions ?? (asyncConversions = Scheduler.MainThread);
 #else
-                    return asyncConversions ?? (asyncConversions = Scheduler.ThreadPool);
+                    return asyncConversions ?? (asyncConversions = ThreadPool);
 #endif
                 }
                 set

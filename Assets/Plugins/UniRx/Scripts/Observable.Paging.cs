@@ -284,11 +284,7 @@ namespace UniRx
 
         public static IObservable<IGroupedObservable<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IObservable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
         {
-#if !UniRxLibrary
             var comparer = UnityEqualityComparer.GetDefault<TKey>();
-#else
-            var comparer = EqualityComparer<TKey>.Default;
-#endif
 
             return GroupBy(source, keySelector, elementSelector, comparer);
         }
@@ -310,11 +306,7 @@ namespace UniRx
 
         public static IObservable<IGroupedObservable<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IObservable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, int capacity)
         {
-#if !UniRxLibrary
             var comparer = UnityEqualityComparer.GetDefault<TKey>();
-#else
-            var comparer = EqualityComparer<TKey>.Default;
-#endif
 
             return GroupBy(source, keySelector, elementSelector, capacity, comparer);
         }

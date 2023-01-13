@@ -1,9 +1,4 @@
-﻿// original code from GitHub Reactive-Extensions/Rx.NET
-// some modified.
-
-// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
-
-#if (NETFX_CORE || NET_4_6 || NET_STANDARD_2_0 || UNITY_WSA_10_0)
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
 using System;
 using System.Threading;
@@ -63,5 +58,3 @@ namespace UniRx
         }
     }
 }
-
-#endif

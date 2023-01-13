@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-
-#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using UniRx.InternalUtil;
-#endif
+
 namespace UniRx
 {
     public interface IReactiveCommand<T> : IObservable<T>
@@ -321,9 +320,7 @@ namespace UniRx
         {
             return new ReactiveCommand<T>(canExecuteSource, initialValue);
         }
-
-#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
-
+        
         static readonly Action<object> Callback = CancelCallback;
 
         static void CancelCallback(object state)
@@ -349,18 +346,11 @@ namespace UniRx
             return tcs.Task;
         }
 
-        public static System.Runtime.CompilerServices.TaskAwaiter<T> GetAwaiter<T>(this IReactiveCommand<T> command)
+        public static TaskAwaiter<T> GetAwaiter<T>(this IReactiveCommand<T> command)
         {
             return command.WaitUntilExecuteAsync(CancellationToken.None).GetAwaiter();
         }
-
-#endif
-
-#if !UniRxLibrary
-
-        // for uGUI(from 4.6)
-#if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5)
-
+        
         /// <summary>
         /// Bind ReactiveCommand to button's interactable and onClick.
         /// </summary>
@@ -390,10 +380,6 @@ namespace UniRx
         {
             return ToReactiveCommand(canExecuteSource, initialValue).BindToOnClick(button, onClick);
         }
-
-#endif
-
-#endif
     }
 
     public static class AsyncReactiveCommandExtensions
@@ -407,9 +393,7 @@ namespace UniRx
         {
             return new AsyncReactiveCommand<T>(sharedCanExecuteSource);
         }
-
-#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
-
+        
         static readonly Action<object> Callback = CancelCallback;
 
         static void CancelCallback(object state)
@@ -433,15 +417,7 @@ namespace UniRx
         {
             return command.WaitUntilExecuteAsync(CancellationToken.None).GetAwaiter();
         }
-
-#endif
-
-
-#if !UniRxLibrary
-
-        // for uGUI(from 4.6)
-#if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5)
-
+        
         /// <summary>
         /// Bind AsyncRaectiveCommand to button's interactable and onClick.
         /// </summary>
@@ -480,8 +456,5 @@ namespace UniRx
         {
             return sharedCanExecuteSource.ToAsyncReactiveCommand().BindToOnClick(button, asyncOnClick);
         }
-#endif
-
-#endif
     }
 }

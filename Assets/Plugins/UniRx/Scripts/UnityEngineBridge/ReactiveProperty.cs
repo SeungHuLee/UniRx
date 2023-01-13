@@ -1,17 +1,11 @@
-﻿#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-#endif
+﻿#pragma warning disable CS1591
 
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using UniRx.InternalUtil;
-#if !UniRxLibrary
 using UnityEngine;
-#endif
-#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
 using System.Threading.Tasks;
-#endif
 
 namespace UniRx
 {
@@ -77,25 +71,15 @@ namespace UniRx
     [Serializable]
     public class ReactiveProperty<T> : IReactiveProperty<T>, IDisposable, IOptimizedObservable<T>, IObserverLinkedList<T>
     {
-#if !UniRxLibrary
         static readonly IEqualityComparer<T> defaultEqualityComparer = UnityEqualityComparer.GetDefault<T>();
-#else
-        static readonly IEqualityComparer<T> defaultEqualityComparer = EqualityComparer<T>.Default;
-#endif
 
-#if !UniRxLibrary
-        [SerializeField]
-#endif
-        T value = default(T);
+        [SerializeField] T value = default(T);
 
-        [NonSerialized]
-        ObserverNode<T> root;
+        [NonSerialized] ObserverNode<T> root;
 
-        [NonSerialized]
-        ObserverNode<T> last;
+        [NonSerialized] ObserverNode<T> last;
 
-        [NonSerialized]
-        bool isDisposed = false;
+        [NonSerialized] bool isDisposed = false;
 
         protected virtual IEqualityComparer<T> EqualityComparer
         {
@@ -252,11 +236,7 @@ namespace UniRx
     /// </summary>
     public class ReadOnlyReactiveProperty<T> : IReadOnlyReactiveProperty<T>, IDisposable, IOptimizedObservable<T>, IObserverLinkedList<T>, IObserver<T>
     {
-#if !UniRxLibrary
         static readonly IEqualityComparer<T> defaultEqualityComparer = UnityEqualityComparer.GetDefault<T>();
-#else
-        static readonly IEqualityComparer<T> defaultEqualityComparer = EqualityComparer<T>.Default;
-#endif
 
         readonly bool distinctUntilChanged = true;
         bool canPublishValueOnSubscribe = false;
@@ -490,9 +470,7 @@ namespace UniRx
         {
             return new ReadOnlyReactiveProperty<T>(source);
         }
-
-#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
-
+        
         static readonly Action<object> Callback = CancelCallback;
 
         static void CancelCallback(object state)
@@ -543,8 +521,7 @@ namespace UniRx
         {
             return source.WaitUntilValueChangedAsync(CancellationToken.None).GetAwaiter();
         }
-
-#endif
+        
 
         /// <summary>
         /// Create ReadOnlyReactiveProperty with distinctUntilChanged: false.
@@ -589,7 +566,6 @@ namespace UniRx
                 return true;
             });
         }
-
 
         /// <summary>
         /// Lastest values of each sequence are all false.

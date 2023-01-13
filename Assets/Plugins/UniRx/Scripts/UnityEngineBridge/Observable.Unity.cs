@@ -1,6 +1,4 @@
-﻿#if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2)
-#define SupportCustomYieldInstruction
-#endif
+﻿#pragma warning disable CS0618
 
 using System;
 using System.Collections;
@@ -9,10 +7,7 @@ using UniRx.InternalUtil;
 using UniRx.Triggers;
 using UnityEngine;
 using System.Threading;
-
-#if !UniRxLibrary
 using SchedulerUnity = UniRx.Scheduler;
-#endif
 
 namespace UniRx
 {
@@ -220,31 +215,18 @@ namespace UniRx
             }
         }
     }
-
-#if UniRxLibrary
-    public static partial class ObservableUnity
-#else
+    
     public static partial class Observable
-#endif
     {
         readonly static HashSet<Type> YieldInstructionTypes = new HashSet<Type>
         {
-            #if UNITY_2018_3_OR_NEWER
-#pragma warning disable CS0618
-#endif
             typeof(WWW),
-            #if UNITY_2018_3_OR_NEWER
-#pragma warning restore CS0618
-#endif
             typeof(WaitForEndOfFrame),
             typeof(WaitForFixedUpdate),
             typeof(WaitForSeconds),
             typeof(AsyncOperation),
             typeof(Coroutine)
         };
-
-#if SupportCustomYieldInstruction
-
         class EveryAfterUpdateInvoker : IEnumerator
         {
             long count = -1;
@@ -290,11 +272,7 @@ namespace UniRx
                 throw new NotSupportedException();
             }
         }
-
-#endif
-
-
-
+        
         /// <summary>From has no callback coroutine to IObservable. If publishEveryYield = true then publish OnNext every yield return else return once on enumeration completed.</summary>
         public static IObservable<Unit> FromCoroutine(Func<IEnumerator> coroutine, bool publishEveryYield = false)
         {
@@ -372,7 +350,6 @@ namespace UniRx
                 }
                 if (hasNext)
                 {
-#if SupportCustomYieldInstruction
                     var current = enumerator.Current;
                     var customHandler = current as ICustomYieldInstructionErrorHandler;
                     if (customHandler != null && customHandler.IsReThrowOnError)
@@ -406,9 +383,6 @@ namespace UniRx
                     {
                         yield return enumerator.Current; // yield inner YieldInstruction
                     }
-#else
-                    yield return enumerator.Current; // yield inner YieldInstruction
-#endif
                 }
             } while (hasNext && !cancellationToken.IsCancellationRequested);
 
@@ -478,7 +452,6 @@ namespace UniRx
                     {
                         yield return current;
                     }
-#if SupportCustomYieldInstruction
                     else if (current is IEnumerator)
                     {
                         var customHandler = current as ICustomYieldInstructionErrorHandler;
@@ -514,7 +487,6 @@ namespace UniRx
                             yield return current;
                         }
                     }
-#endif
                     else if (current == null && nullAsNextUpdate)
                     {
                         yield return null;
@@ -644,8 +616,6 @@ namespace UniRx
             return FromCoroutine<Unit>((observer, cancellationToken) => WrapEnumerator(coroutine, observer, cancellationToken, publishEveryYield));
         }
 
-#if SupportCustomYieldInstruction
-
         public static ObservableYieldInstruction<Unit> ToYieldInstruction(this IEnumerator coroutine)
         {
             return ToObservable(coroutine, false).ToYieldInstruction();
@@ -665,8 +635,6 @@ namespace UniRx
         {
             return ToObservable(coroutine, false).ToYieldInstruction(throwOnError, cancellationToken);
         }
-
-#endif
 
         // variation of FromCoroutine
 
@@ -716,24 +684,8 @@ namespace UniRx
         {
             return MainThreadDispatcher.LateUpdateAsObservable().Scan(-1L, (x, y) => x + 1);
         }
-
-#if SupportCustomYieldInstruction
-
-        /// <summary>
-        /// [Obsolete]Same as EveryUpdate.
-        /// </summary>
-        [Obsolete]
-        public static IObservable<long> EveryAfterUpdate()
-        {
-            return FromCoroutine<long>((observer, cancellationToken) => new EveryAfterUpdateInvoker(observer, cancellationToken));
-        }
-
-#endif
-
-        #region Observable.Time Frame Extensions
-
+        
         // Interval, Timer, Delay, Sample, Throttle, Timeout
-
         public static IObservable<Unit> NextFrame(FrameCountType frameCountType = FrameCountType.Update)
         {
             return FromMicroCoroutine<Unit>((observer, cancellation) => NextFrameCore(observer, cancellation), frameCountType);
@@ -859,10 +811,6 @@ namespace UniRx
             return new UniRx.Operators.DelayFrameSubscriptionObservable<T>(source, frameCount, frameCountType);
         }
 
-        #endregion
-
-#if SupportCustomYieldInstruction
-
         /// <summary>
         /// Convert to yieldable IEnumerator. e.g. yield return source.ToYieldInstruction();.
         /// If needs last result, you can take ObservableYieldInstruction.HasResult/Result property.
@@ -902,8 +850,6 @@ namespace UniRx
         {
             return new ObservableYieldInstruction<T>(source, throwOnError, cancel);
         }
-
-#endif
 
         /// <summary>Convert to awaitable IEnumerator.</summary>
         public static IEnumerator ToAwaitableEnumerator<T>(this IObservable<T> source, CancellationToken cancel = default(CancellationToken))
@@ -1136,9 +1082,7 @@ namespace UniRx
             if (frameCount < 0) throw new ArgumentException("frameCount must be >= 0, frameCount:" + frameCount);
             return new UniRx.Operators.BatchFrameObservable(source, frameCount, frameCountType);
         }
-
-#if UniRxLibrary
-
+        
         static IEnumerable<IObservable<T>> RepeatInfinite<T>(IObservable<T> source)
         {
             while (true)
@@ -1160,9 +1104,10 @@ namespace UniRx
             // marker for CatchIgnore and Catch avoid iOS AOT problem.
             public static IObservable<TSource> CatchIgnore<TSource>(Exception ex)
             {
-                return Observable.Empty<TSource>();
+                return Empty<TSource>();
             }
         }
-#endif
     }
 }
+
+#pragma warning restore CS0618

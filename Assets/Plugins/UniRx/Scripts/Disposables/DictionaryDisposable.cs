@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace UniRx
 {
@@ -177,14 +178,11 @@ namespace UniRx
             }
         }
 
-
-#if !UNITY_METRO
-
-        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             lock (inner)
             {
-                ((System.Runtime.Serialization.ISerializable)inner).GetObjectData(info, context);
+                ((ISerializable)inner).GetObjectData(info, context);
             }
         }
 
@@ -192,12 +190,10 @@ namespace UniRx
         {
             lock (inner)
             {
-                ((System.Runtime.Serialization.IDeserializationCallback)inner).OnDeserialization(sender);
+                ((IDeserializationCallback)inner).OnDeserialization(sender);
             }
         }
-
-#endif
-
+        
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
             Add((TKey)item.Key, (TValue)item.Value);
