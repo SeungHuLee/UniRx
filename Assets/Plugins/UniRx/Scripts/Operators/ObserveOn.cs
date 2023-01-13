@@ -109,6 +109,16 @@ namespace UniRx.Operators
                 }
             }
 
+            private SchedulableAction DequeueAction()
+            {
+                lock (actions)
+                {
+                    var action = actions.First.Value;
+                    actions.RemoveFirst();
+                    return action;
+                }
+            }
+
             private void ProcessNext()
             {
                 lock (actions)
@@ -116,7 +126,7 @@ namespace UniRx.Operators
                     if (actions.Count == 0 || isDisposed)
                         return;
 
-                    var action = actions.First.Value;
+                    var action = DequeueAction();
 
                     if (action.IsScheduled)
                         return;
