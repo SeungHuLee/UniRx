@@ -2,43 +2,35 @@ UniRx - Reactive Extensions for Unity
 ===
 Created by Yoshifumi Kawai(neuecc)
 
-[![CircleCI](https://circleci.com/gh/neuecc/UniRx.svg?style=svg)](https://circleci.com/gh/neuecc/UniRx)  
-[![Become as Backer](https://opencollective.com/unirx/tiers/backer.svg?avatarHeight=50)](https://opencollective.com/unirx) [![Become as Sponsor](https://opencollective.com/unirx/tiers/sponsor.svg?avatarHeight=50)](https://opencollective.com/unirx)
-
 What is UniRx?
 ---
-UniRx (Reactive Extensions for Unity) is a reimplementation of the .NET Reactive Extensions. The Official Rx implementation is great but doesn't work on Unity and has issues with iOS IL2CPP compatibility. This library fixes those issues and adds some specific utilities for Unity. Supported platforms are PC/Mac/Android/iOS/WebGL/WindowsStore/etc and the library.
+UniRx is a reimplementation of the .NET Rx. .NET Rx has issues with IL2CPP compatibility. This library fixes those issues and adds some specific utilities for Unity. Supported platforms are PC/Android/iOS/WebGL.
 
-UniRx is available on the Unity Asset Store (FREE) - http://u3d.as/content/neuecc/uni-rx-reactive-extensions-for-unity/7tT
-
-Blog for update info - https://medium.com/@neuecc
-
-Support thread on the Unity Forums: Ask me any question - http://forum.unity3d.com/threads/248535-UniRx-Reactive-Extensions-for-Unity
-
-Release Notes, see [UniRx/releases](https://github.com/neuecc/UniRx/releases)
-
-UniRx is Core Library (Port of Rx) + Platform Adaptor (MainThreadScheduler/FromCoroutine/etc) + Framework (ObservableTriggers/ReactiveProeperty/etc).
+UniRx is consisted of:
+- Core Library (Port of Rx)
+- Platform Adaptor (MainThreadScheduler/FromCoroutine/etc)
+- Framework (ObservableTriggers/ReactiveProeperty/etc)
 
 > Note: async/await integration(UniRx.Async) is separated to [Cysharp/UniTask](https://github.com/Cysharp/UniTask) after ver. 7.0.
 
 Why Rx?
 ---
-Ordinarily, Network operations in Unity require the use of `WWW` and `Coroutine`. That said, using `Coroutine` is not good practice for asynchronous operations for the following (and other) reasons:
+Using `Coroutine` is not good practice for async operations for the following reasons:
 
-1. Coroutines can't return any values, since its return type must be IEnumerator.
-2. Coroutines can't handle exceptions, because yield return statements cannot be surrounded with a try-catch construction.
+1. Can't return any values, since its return type must be IEnumerator.
+2. Can't handle exceptions, because yield return statements cannot be surrounded by try-catch.
 
-This kind of lack of composability causes operations to be close-coupled, which often results in huge monolithic IEnumerators.
+These result operations to be close-coupled, which often results in huge monolithic IEnumerators.
 
-Rx cures that kind of "asynchronous blues". Rx is a library for composing asynchronous and event-based programs using observable collections and LINQ-style query operators. 
+Rx solves this "async blues" anti-pattern from happening. Rx is a library for composing async and event-based programs using observable collections and LINQ-style query operators. 
   
-The game loop (every Update, OnCollisionEnter, etc), sensor data (Kinect, Leap Motion, VR Input, etc.) are all types of events. Rx represents events as reactive sequences which are both easily composable and support time-based operations by using LINQ query operators.
+The game loop (every Update, OnCollisionEnter, etc), sensor data (Kinect, Leap Motion, VR Input, etc.) are considered as events. Rx represents events as reactive sequences which are both easily composable and support time-based operations by using LINQ query operators.
 
 Unity is generally single threaded but UniRx facilitates multithreading for joins, cancels, accessing GameObjects, etc.
 
 UniRx helps UI programming with uGUI. All UI events (clicked, valuechanged, etc) can be converted to UniRx event streams. 
 
-Unity supports async/await from 2017 with C# upgrades, UniRx family prjects provides more lightweight, more powerful async/await integration with Unity. Please see  [Cysharp/UniTask](https://github.com/Cysharp/UniTask).
+Please see UniTask for lightweight, powerful async/await integration with Unity.  [Cysharp/UniTask](https://github.com/Cysharp/UniTask).
 
 Introduction
 ---
@@ -55,7 +47,7 @@ clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250)))
     .Subscribe(xs => Debug.Log("DoubleClick Detected! Count:" + xs.Count));
 ```
 
-This example demonstrates the following features (in only five lines!):
+This example demonstrates the following features (in 5 lines!):
 
 * The game loop (Update) as an event stream
 * Composable event streams
@@ -294,7 +286,7 @@ Observable.WhenAll(heavyMethod, heavyMethod2)
 
 DefaultScheduler
 ---
-UniRx's default time based operations (Interval, Timer, Buffer(timeSpan), etc) use `Scheduler.MainThread` as their scheduler. That means most operators (except for `Observable.Start`) work on a single thread, so ObserverOn isn't needed and thread safety measures can be ignored. This is differet from the standard RxNet implementation but better suited to the Unity environment.  
+Time based operations in UniRx (Interval, Timer, Buffer(timeSpan), etc) use `Scheduler.MainThread` as their scheduler. That means most operators (except for `Observable.Start`) work on a single thread. So ObserverOn isn't needed and thread safety measures can be ignored.
 
 `Scheduler.MainThread` runs under Time.timeScale's influence. If you want to ignore the time scale, use ` Scheduler.MainThreadIgnoreTimeScale` instead.
 
@@ -304,7 +296,7 @@ UniRx can handle MonoBehaviour events with `UniRx.Triggers`:
 
 ```csharp
 using UniRx;
-using UniRx.Triggers; // need UniRx.Triggers namespace
+using UniRx.Triggers;
 
 public class MyComponent : MonoBehaviour
 {
@@ -331,7 +323,7 @@ These can also be handled more easily by directly subscribing to observables ret
 
 ```csharp
 using UniRx;
-using UniRx.Triggers; // need UniRx.Triggers namespace for extend gameObejct
+using UniRx.Triggers;
 
 public class DragAndDropOnce : MonoBehaviour
 {
@@ -1019,7 +1011,7 @@ public class Presenter : MonoBehaviour
         // after clicked, button shows disable for 3 seconds		
         command.BindTo(button);		
 		
-        // Note:shortcut extension, bind aync onclick directly		
+        // Note:shortcut extension, bind async onclick directly		
         button.BindToOnClick(_ =>		
         {		
             return Observable.Timer(TimeSpan.FromSeconds(3)).AsUnitObservable();		
@@ -1043,7 +1035,7 @@ public class Presenter : MonoBehaviour
     void Start()
     {
         // share canExecute status.
-        // when clicked button1, button1 and button2 was disabled for 3 seconds.
+        // when button1 is clicked, both button1 and button2 will be disabled for 3 seconds.
 
         var sharedCanExecute = new ReactiveProperty<bool>();
 
@@ -1062,7 +1054,7 @@ public class Presenter : MonoBehaviour
 
 MessageBroker, AsyncMessageBroker
 ---
-MessageBroker is Rx based in-memory pubsub system filtered by type.
+MessageBroker is Rx based in-memory Pub/Sub system filtered by type.
 
 ```csharp
 public class TestArgs
@@ -1167,7 +1159,7 @@ public class Presenter : MonoBehaviour
 
 Visual Studio Analyzer
 ---
-For Visual Studio 2015 users, a custom analyzer, UniRxAnalyzer, is provided. It can, for example, detect when streams aren't subscribed to.
+For Visual Studio users, UniRxAnalyzer is provided. It can detect when streams aren't subscribed to.
 
 ![](StoreDocument/AnalyzerReference.jpg)
 
@@ -1183,22 +1175,22 @@ Samples
 ---
 See [UniRx/Examples](https://github.com/neuecc/UniRx/tree/master/Assets/Plugins/UniRx/Examples)  
 
-The samples demonstrate how to do resource management (Sample09_EventHandling), what is the MainThreadDispatcher, among other things.
-
-Windows Store/Phone App (NETFX_CORE)
----
-Some interfaces, such as  `UniRx.IObservable<T>` and `System.IObservable<T>`, cause conflicts when submitting to the Windows Store App.
-Therefore, when using NETFX_CORE, please refrain from using such constructs as `UniRx.IObservable<T>` and refer to the UniRx components by their short name, without adding the namespace. This solves the conflicts.
+The samples demonstrate:
+- Resource Management (Sample09_EventHandling)
+- What is MainThreadDispatcher
+- Other things
 
 DLL Separation
 ---
-If you want to pre-build UniRx, you can build own dll. clone project and open `UniRx.sln`, you can see `UniRx`, it is fullset separated project of UniRx. You should define compile symbol like  `UNITY;UNITY_5_4_OR_NEWER;UNITY_5_4_0;UNITY_5_4;UNITY_5;` + `UNITY_EDITOR`, `UNITY_IPHONE` or other platform symbol. We can not provides pre-build binary to release page, asset store because compile symbol is different each other.
+If you want to pre-build UniRx, you can try building your own dll.
+1. Clone project and open `UniRx.sln`, you can see `UniRx` project, it is fullset separated project of UniRx.2. You should define compile symbol like `UNITY_EDITOR`, `UNITY_IPHONE` or other platform symbol you need. 
+- We don't provide pre-build binary to release page.
 
 UPM Package
 ---
-After Unity 2019.3.4f1, Unity 2020.1a21, that support path query parameter of git package. You can add `https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts` to Package Manager
+After Unity 2019.3, Unity support path query parameter for importing package from git. You can add `https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts` to Unity Package Manager.
 
-or add `"com.neuecc.unirx": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts"` to `Packages/manifest.json`.
+or you may add `"com.neuecc.unirx": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts"` to `Packages/manifest.json`.
 
 Reference
 ---
@@ -1206,20 +1198,7 @@ Reference
 
 UniRx API documents.
 
-* [ReactiveX](http://reactivex.io/)
-
-The home of ReactiveX. [Introduction](http://reactivex.io/intro.html), [All operators](http://reactivex.io/documentation/operators.html) are illustrated with graphical marble diagrams, there makes easy to understand. And UniRx is official [ReactiveX Languages](http://reactivex.io/languages.html).
-
-* [Introduction to Rx](http://introtorx.com/)
-
-A great online tutorial and eBook.
-
-* [Beginner's Guide to the Reactive Extensions](http://msdn.microsoft.com/en-us/data/gg577611)
-
-Many videos, slides and documents for Rx.NET.
-
-* [The future of programming technology in Unity - UniRx -(JPN)](http://www.slideshare.net/torisoup/unity-unirx) 
-  - [Korean translation](http://www.slideshare.net/agebreak/160402-unirx)
+* [The future of programming technology in Unity - UniRx -(JPN)](http://www.slideshare.net/torisoup/unity-unirx)
 
 Intro slide by [@torisoup](https://github.com/torisoup)
 
@@ -1234,24 +1213,14 @@ How to integrate with PlayFab API
 
 Help & Contribute
 ---
-Support thread on the Unity forum. Ask me any question - [http://forum.unity3d.com/threads/248535-UniRx-Reactive-Extensions-for-Unity](http://forum.unity3d.com/threads/248535-UniRx-Reactive-Extensions-for-Unity)  
-
-Become a backer, Sponsored, one time donation are welcome, we're using [Open Collective - UniRx](https://opencollective.com/unirx/#)
-
 We welcome any contributions, be they bug reports, requests or pull request.  
 Please consult and submit your reports or requests on GitHub issues.  
 Source code is available in `Assets/Plugins/UniRx/Scripts`.  
 
-Author's other Unity + LINQ Assets
+Original Author Info
 ---
-[LINQ to GameObject](https://github.com/neuecc/LINQ-to-GameObject-for-Unity/) is a group of GameObject extensions for Unity that allows traversing the hierarchy and appending GameObject to it like LINQ to XML. It's free and opensource on GitHub.
-
-![](https://raw.githubusercontent.com/neuecc/LINQ-to-GameObject-for-Unity/master/Images/axis.jpg)
-
-Author Info
----
-Yoshifumi Kawai(a.k.a. neuecc) is a software developer in Japan.  
-Currently founded consulting company [New World, Inc.](http://new-world.co/)  
+Yoshifumi Kawai(a.k.a. neuecc) is a CEO, CTO, Software Developer in Japan.  
+Currently founded, running consulting company [Cysharp Inc.](http://cysharp.com/)  
 He is awarding Microsoft MVP for Visual C# since 2011.  
 
 Blog: https://medium.com/@neuecc (English)  
@@ -1261,5 +1230,3 @@ Twitter: https://twitter.com/neuecc (Japanese)
 License
 ---
 This library is under the MIT License.
-
-Some code is borrowed from [Rx.NET](https://github.com/dotnet/reactive/) and [mono/mcs](https://github.com/mono/mono).
