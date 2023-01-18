@@ -1,3 +1,9 @@
+
+
+It seems that Official UniRx library is not maintained anymore, but many users/companys are maintaining their own fork.
+I guess I should do the same. But I'll make mine public. Please inform me if there's better maintained version.
+===
+
 UniRx - Reactive Extensions for Unity
 ===
 Created by Yoshifumi Kawai(neuecc)
